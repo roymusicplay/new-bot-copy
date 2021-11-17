@@ -21,6 +21,8 @@ import ffmpeg
 from pytgcalls import StreamType
 from pytgcalls.types.input_stream import InputAudioStream
 from pytgcalls.types.input_stream import InputStream
+from youtube_search import YoutubeSearch
+
 from PIL import Image, ImageFont, ImageDraw
 
 
