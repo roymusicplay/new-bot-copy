@@ -1,5 +1,7 @@
 from pyrogram import Client
 from pytgcalls import PyTgCalls
+from pytgcalls.types import Update
+from pytgcalls.types.input_stream import InputAudioStream
 
 import config
 from . import queues
