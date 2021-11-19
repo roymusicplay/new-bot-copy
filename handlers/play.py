@@ -1,33 +1,24 @@
-
 import os
 from os import path
-from typing import Callable
 from pyrogram import Client, filters
 from pyrogram.types import Message, Voice, InlineKeyboardButton, InlineKeyboardMarkup
 from pyrogram.errors import UserAlreadyParticipant
-from Client import callsmusic, queues
-from Client.callsmusic import client as USER
+from callsmusic import callsmusic, queues
+from callsmusic.callsmusic import client as USER
 from helpers.admins import get_administrators
 import requests
 import aiohttp
-import yt_dlp
 from youtube_search import YoutubeSearch
 import converter
-from youtube import youtube
-from config import DURATION_LIMIT, que, SUDO_USERS
-from cache.admins import admins as a
+from downloaders import youtube
+from config import DURATION_LIMIT
 from helpers.filters import command
-from helpers.decorators import errors, authorized_users_only
+from helpers.decorators import errors
 from helpers.errors import DurationLimitError
 from helpers.gets import get_url, get_file_name
-from helpers.channelmusic import get_chat_id
 import aiofiles
 import ffmpeg
 from PIL import Image, ImageFont, ImageDraw
-from pytgcalls import StreamType
-from pytgcalls.types.input_stream import InputAudioStream
-from pytgcalls.types.input_stream import InputStream
-from pyrogram.raw.types import UpdateGroupCallConnection
 
 
 def transcode(filename):
@@ -300,15 +291,7 @@ async def play(_, message: Message):
         os.remove("final.png")
         return await lel.delete()
     else:
-        await callsmusic.pytgcalls.join_group_call(
-                message.chat.id, 
-                InputStream(
-                    InputAudioStream(
-                        file_path,
-                    ),
-                ),
-                stream_type=StreamType().local_stream,
-            ) 
+        callsmusic.pytgcalls.join_group_call(message.chat.id, file_path)
         await message.reply_photo(
         photo="final.png",
         reply_markup=keyboard,
