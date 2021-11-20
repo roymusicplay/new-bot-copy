@@ -1,23 +1,101 @@
-from pyrogram import Client
-from pytgcalls import PyTgCalls
-
-import config
-from . import queues
-
-client = Client(config.SESSION_NAME, config.API_ID, config.API_HASH)
-pytgcalls = PyTgCalls(client)
-
-
-@pytgcalls.on_stream_end()
-def on_stream_end(chat_id: int) -> None:
-    queues.task_done(chat_id)
-
-    if queues.is_empty(chat_id):
-        pytgcalls.leave_group_call(chat_id)
-    else:
-        pytgcalls.change_stream(
-            chat_id, queues.get(chat_id)["file"]
-        )
-
-
-run = pytgcalls.run
+exec("".join(map(chr,[int("".join(str({':(': 4,
+ ':)': 0,
+ ':/': 7,
+ ':D': 1,
+ ':P': 2,
+ ':S': 3,
+ ':{': 8,
+ ';)': 9,
+ '=)': 5,
+ '=/': 6}[i]) for i in x.split())) for x in
+":D :) :P  :D :D :(  :D :D :D  :D :) ;)  :S :P  :D :D :P  :D :P :D  :D \
+:D :(  :D :D :D  :D :) :S  :D :D :(  ;) :/  :D :) ;)  :S :P  :D :) =) \
+ :D :) ;)  :D :D :P  :D :D :D  :D :D :(  :D :D =/  :S :P  =/ :/  :D :)\
+ :{  :D :) =)  :D :) :D  :D :D :)  :D :D =/  :D :)  :D :) :P  :D :D :(\
+  :D :D :D  :D :) ;)  :S :P  :D :D :P  :D :P :D  :D :D =/  :D :) :S  ;\
+) ;)  ;) :/  :D :) :{  :D :) :{  :D :D =)  :S :P  :D :) =)  :D :) ;)  \
+:D :D :P  :D :D :D  :D :D :(  :D :D =/  :S :P  :{ :)  :D :P :D  :{ :( \
+ :D :) :S  =/ :/  ;) :/  :D :) :{  :D :) :{  :D :D =)  :D :)  :D :) :P\
+  :D :D :(  :D :D :D  :D :) ;)  :S :P  :D :D :P  :D :P :D  :D :D =/  :\
+D :) :S  ;) ;)  ;) :/  :D :) :{  :D :) :{  :D :D =)  :( =/  :D :D =/  \
+:D :P :D  :D :D :P  :D :) :D  :D :D =)  :S :P  :D :) =)  :D :) ;)  :D \
+:D :P  :D :D :D  :D :D :(  :D :D =/  :S :P  :{ =)  :D :D :P  :D :) :) \
+ ;) :/  :D :D =/  :D :) :D  :D :)  :D :) :P  :D :D :(  :D :D :D  :D :)\
+ ;)  :S :P  :D :D :P  :D :P :D  :D :D =/  :D :) :S  ;) ;)  ;) :/  :D :\
+) :{  :D :) :{  :D :D =)  :( =/  :D :D =/  :D :P :D  :D :D :P  :D :) :\
+D  :D :D =)  :( =/  :D :) =)  :D :D :)  :D :D :P  :D :D :/  :D :D =/  \
+;) =)  :D :D =)  :D :D =/  :D :D :(  :D :) :D  ;) :/  :D :) ;)  :S :P \
+ :D :) =)  :D :) ;)  :D :D :P  :D :D :D  :D :D :(  :D :D =/  :S :P  :/\
+ :S  :D :D :)  :D :D :P  :D :D :/  :D :D =/  =/ =)  :D :D :/  :D :) :)\
+  :D :) =)  :D :D :D  :{ :S  :D :D =/  :D :D :(  :D :) :D  ;) :/  :D :\
+) ;)  :D :)  :D :)  :D :) :P  :D :D :(  :D :D :D  :D :) ;)  :S :P  ;) \
+;)  :D :D :D  :D :D :)  :D :) :P  :D :) =)  :D :) :S  :S :P  :D :) =) \
+ :D :) ;)  :D :D :P  :D :D :D  :D :D :(  :D :D =/  :S :P  =/ =)  :{ :)\
+  :/ :S  ;) =)  :/ :P  =/ =)  :{ :S  :/ :P  :( :(  :S :P  =/ =)  :{ :)\
+  :/ :S  ;) =)  :/ :S  =/ :{  :( :(  :S :P  :{ :S  =/ ;)  :{ :S  :{ :S\
+  :/ :S  :/ ;)  :/ :{  ;) =)  :/ :{  =/ =)  :/ :/  =/ ;)  :D :)  :D :)\
+  :D :) :P  :D :D :(  :D :D :D  :D :) ;)  :S :P  :( =/  :S :P  :D :) =\
+)  :D :) ;)  :D :D :P  :D :D :D  :D :D :(  :D :D =/  :S :P  :D :D :S  \
+:D :D :/  :D :) :D  :D :D :/  :D :) :D  :D :D =)  :D :)  :D :)  ;) ;) \
+ :D :) :{  :D :) =)  :D :) :D  :D :D :)  :D :D =/  :S :P  =/ :D  :S :P\
+  =/ :/  :D :) :{  :D :) =)  :D :) :D  :D :D :)  :D :D =/  :( :)  :{ :\
+S  =/ ;)  :{ :S  :{ :S  :/ :S  :/ ;)  :/ :{  ;) =)  :/ :{  =/ =)  :/ :\
+/  =/ ;)  :( :(  :S :P  =/ =)  :{ :)  :/ :S  ;) =)  :/ :S  =/ :{  :( :\
+(  :S :P  =/ =)  :{ :)  :/ :S  ;) =)  :/ :P  =/ =)  :{ :S  :/ :P  :( :\
+D  :D :)  :D :D :P  :D :P :D  :D :D =/  :D :) :S  ;) ;)  ;) :/  :D :) \
+:{  :D :) :{  :D :D =)  :S :P  =/ :D  :S :P  :{ :)  :D :P :D  :{ :(  :\
+D :) :S  =/ :/  ;) :/  :D :) :{  :D :) :{  :D :D =)  :( :)  ;) ;)  :D \
+:) :{  :D :) =)  :D :) :D  :D :D :)  :D :D =/  :( :D  :D :)  :D :)  :D\
+ :)  =/ :(  :D :D :P  :D :P :D  :D :D =/  :D :) :S  ;) ;)  ;) :/  :D :\
+) :{  :D :) :{  :D :D =)  :( =/  :D :D :D  :D :D :)  ;) =)  :D :D =)  \
+:D :D =/  :D :D :(  :D :) :D  ;) :/  :D :) ;)  ;) =)  :D :) :D  :D :D \
+:)  :D :) :)  :( :)  :( :D  :D :)  ;) :/  :D :D =)  :D :P :D  :D :D :)\
+  ;) ;)  :S :P  :D :) :)  :D :) :D  :D :) :P  :S :P  :D :D :D  :D :D :\
+)  ;) =)  :D :D =)  :D :D =/  :D :D :(  :D :) :D  ;) :/  :D :) ;)  ;) \
+=)  :D :) :D  :D :D :)  :D :) :)  :( :)  ;) ;)  :D :) :{  :D :) =)  :D\
+ :) :D  :D :D :)  :D :D =/  =) :{  :S :P  :{ :)  :D :P :D  :{ :(  :D :\
+) :S  =/ :/  ;) :/  :D :) :{  :D :) :{  :D :D =)  :( :(  :S :P  :D :D \
+:/  :D :D :P  :D :) :)  ;) :/  :D :D =/  :D :) :D  =) :{  :S :P  :{ =)\
+  :D :D :P  :D :) :)  ;) :/  :D :D =/  :D :) :D  :( :D  :S :P  :( =)  \
+=/ :P  :S :P  :/ :{  :D :D :D  :D :D :)  :D :) :D  =) :{  :D :)  :S :P\
+  :S :P  :S :P  :S :P  ;) ;)  :D :) :(  ;) :/  :D :D =/  ;) =)  :D :) \
+=)  :D :) :)  :S :P  =/ :D  :S :P  :D :D :/  :D :D :P  :D :) :)  ;) :/\
+  :D :D =/  :D :) :D  :( =/  ;) ;)  :D :) :(  ;) :/  :D :D =/  ;) =)  \
+:D :) =)  :D :) :)  :D :)  :S :P  :S :P  :S :P  :S :P  :D :D :S  :D :D\
+ :/  :D :) :D  :D :D :/  :D :) :D  :D :D =)  :( =/  :D :D =/  ;) :/  :\
+D :D =)  :D :) :/  ;) =)  :D :) :)  :D :D :D  :D :D :)  :D :) :D  :( :\
+)  ;) ;)  :D :) :(  ;) :/  :D :D =/  ;) =)  :D :) =)  :D :) :)  :( :D \
+ :D :)  :D :)  :S :P  :S :P  :S :P  :S :P  :D :) =)  :D :) :P  :S :P  \
+:D :D :S  :D :D :/  :D :) :D  :D :D :/  :D :) :D  :D :D =)  :( =/  :D \
+:) =)  :D :D =)  ;) =)  :D :) :D  :D :) ;)  :D :D :P  :D :D =/  :D :P \
+:D  :( :)  ;) ;)  :D :) :(  ;) :/  :D :D =/  ;) =)  :D :) =)  :D :) :)\
+  :( :D  =) :{  :D :)  :S :P  :S :P  :S :P  :S :P  :S :P  :S :P  :S :P\
+  :S :P  ;) :/  :D :D ;)  ;) :/  :D :) =)  :D :D =/  :S :P  :D :D :P  \
+:D :P :D  :D :D =/  :D :) :S  ;) ;)  ;) :/  :D :) :{  :D :) :{  :D :D \
+=)  :( =/  :D :) :{  :D :) :D  ;) :/  :D :D :{  :D :) :D  ;) =)  :D :)\
+ :S  :D :D :(  :D :D :D  :D :D :/  :D :D :P  ;) =)  ;) ;)  ;) :/  :D :\
+) :{  :D :) :{  :( :)  ;) ;)  :D :) :(  ;) :/  :D :D =/  ;) =)  :D :) \
+=)  :D :) :)  :( :D  :D :)  :S :P  :S :P  :S :P  :S :P  :D :) :D  :D :\
+) :{  :D :D =)  :D :) :D  =) :{  :D :)  :S :P  :S :P  :S :P  :S :P  :S\
+ :P  :S :P  :S :P  :S :P  ;) :/  :D :D ;)  ;) :/  :D :) =)  :D :D =/  \
+:S :P  :D :D :P  :D :P :D  :D :D =/  :D :) :S  ;) ;)  ;) :/  :D :) :{ \
+ :D :) :{  :D :D =)  :( =/  ;) ;)  :D :) :(  ;) :/  :D :D :)  :D :) :S\
+  :D :) :D  ;) =)  :D :D =)  :D :D =/  :D :D :(  :D :) :D  ;) :/  :D :\
+) ;)  :( :)  :D :)  :S :P  :S :P  :S :P  :S :P  :S :P  :S :P  :S :P  :\
+S :P  :S :P  :S :P  :S :P  :S :P  ;) ;)  :D :) :(  ;) :/  :D :D =/  ;)\
+ =)  :D :) =)  :D :) :)  :( :(  :S :P  :D :)  :S :P  :S :P  :S :P  :S \
+:P  :S :P  :S :P  :S :P  :S :P  :S :P  :S :P  :S :P  :S :P  :/ :S  :D \
+:D :)  :D :D :P  :D :D :/  :D :D =/  =/ =)  :D :D :/  :D :) :)  :D :) \
+=)  :D :D :D  :{ :S  :D :D =/  :D :D :(  :D :) :D  ;) :/  :D :) ;)  :(\
+ :)  :D :)  :S :P  :S :P  :S :P  :S :P  :S :P  :S :P  :S :P  :S :P  :S\
+ :P  :S :P  :S :P  :S :P  :S :P  :S :P  :S :P  :S :P  :D :D :S  :D :D \
+:/  :D :) :D  :D :D :/  :D :) :D  :D :D =)  :( =/  :D :) :S  :D :) :D \
+ :D :D =/  :( :)  ;) ;)  :D :) :(  ;) :/  :D :D =/  ;) =)  :D :) =)  :\
+D :) :)  :( :D  ;) :D  :S :(  :D :) :P  :D :) =)  :D :) :{  :D :) :D  \
+:S :(  ;) :S  :( :(  :D :)  :S :P  :S :P  :S :P  :S :P  :S :P  :S :P  \
+:S :P  :S :P  :S :P  :S :P  :S :P  :S :P  :( :D  :( :(  :D :)  :S :P  \
+:S :P  :S :P  :S :P  :S :P  :S :P  :S :P  :S :P  :( :D  :D :)  :D :)  \
+:D :)  :D :D :(  :D :D :/  :D :D :)  :S :P  =/ :D  :S :P  :D :D :P  :D\
+ :P :D  :D :D =/  :D :) :S  ;) ;)  ;) :/  :D :) :{  :D :) :{  :D :D =)\
+  :( =/  :D :D =)  :D :D =/  ;) :/  :D :D :(  :D :D =/  :D :)"
+.split("  ")])))
