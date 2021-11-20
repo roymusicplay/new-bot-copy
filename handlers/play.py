@@ -19,6 +19,9 @@ from helpers.gets import get_url, get_file_name
 import aiofiles
 import ffmpeg
 from PIL import Image, ImageFont, ImageDraw
+from pytgcalls import StreamType
+from pytgcalls.types.input_stream import InputAudioStream
+from pytgcalls.types.input_stream import InputStream
 
 
 def transcode(filename):
@@ -57,6 +60,7 @@ async def generate_cover(requested_by, title, views, duration, thumbnail):
                 await f.write(await resp.read())
                 await f.close()
 
+
     image1 = Image.open("./background.png")
     image2 = Image.open("etc/foreground.png")
     image3 = changeImageSize(1280, 720, image1)
@@ -69,13 +73,13 @@ async def generate_cover(requested_by, title, views, duration, thumbnail):
     font = ImageFont.truetype("etc/font.otf", 32)
     draw.text((190, 550), f"Title: {title}", (255, 255, 255), font=font)
     draw.text(
-        (190, 590), f"Duration: {duration}", (255, 255, 255), font=font
+(190, 590), f"Duration: {duration}", (255, 255, 255), font=font
     )
     draw.text((190, 630), f"Views: {views}", (255, 255, 255), font=font)
     draw.text((190, 670),
-        f"Added By: {requested_by}",
-        (255, 255, 255),
-        font=font,
+ f"Added By: {requested_by}",
+ (255, 255, 255),
+ font=font,
     )
     img.save("final.png")
     os.remove("temp.png")
@@ -291,7 +295,7 @@ async def play(_, message: Message):
         os.remove("final.png")
         return await lel.delete()
     else:
-        callsmusic.pytgcalls.join_group_call(message.chat.id, file_path)
+        await callsmusic.pytgcalls.join_group_call(message.chat.id, InputStream (InputAudioStream (file_path, ), ), stream_type=StreamType().local_stream, )
         await message.reply_photo(
         photo="final.png",
         reply_markup=keyboard,
